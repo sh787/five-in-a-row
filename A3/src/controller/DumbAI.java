@@ -15,6 +15,7 @@ import model.Player;
  */
 public class DumbAI extends Controller {
 	
+	//invariants: row and column
 	private int row; 
 	private int column;
 
