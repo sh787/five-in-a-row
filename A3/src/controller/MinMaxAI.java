@@ -113,7 +113,7 @@ public abstract class MinMaxAI extends Controller {
 		Iterator<Location> it= moves(g.getBoard()).iterator();
 		
 		//super.me is maximizing, super.me.opponent() is minimizing
-		int bestScore = 0; 
+		int bestScore = Integer.MIN_VALUE; 
 		int currentScore;
 		
 		
@@ -130,13 +130,15 @@ public abstract class MinMaxAI extends Controller {
 				if (currentScore > bestScore) {
 					bestScore = currentScore;
 					bestLocation = next;
+					g.getBoard().update(super.me, bestLocation);
 				} 
-			} else {
+			} else { 
 				currentScore =  estimate(g.getBoard());
 				bestLocation = minimax(g, depth - 1, currentPlayer.opponent());
 				if (currentScore < bestScore) {
 					bestScore = currentScore;
 					bestLocation = next;
+					g.getBoard().update(super.me, bestLocation);
 				}
 			}	
 		}
