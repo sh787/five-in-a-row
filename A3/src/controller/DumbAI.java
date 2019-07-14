@@ -6,7 +6,7 @@ import java.util.List;
 import model.Board;
 import model.Game;
 import model.Location;
-//import model.NotImplementedException;
+import model.NotImplementedException;
 import model.Player;
 
 /**

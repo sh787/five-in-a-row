@@ -1,5 +1,9 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 import model.Board;
@@ -69,6 +73,20 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	protected abstract Iterable<Location> moves(Board b);
 	
+	
+	/**
+	 * The depth of the moves of which the algorithm will look into the future.
+	 */
+	private int minMaxDepth;
+	
+	/**
+	 * The best location that maximizes the score according to the minimax
+	 * algorithm. Initially the best location is the center of the board.
+	 */
+	Location bestLocation = new Location(4, 4);
+
+	
+	
 	/**
 	 * Create an AI that will recursively search for the next move using the
 	 * minimax algorithm.  When searching for a move, the algorithm will look
@@ -78,10 +96,24 @@ public abstract class MinMaxAI extends Controller {
 	 * more time to select moves.
 	 */
 	protected MinMaxAI(Player me, int depth) {
-		super(me);
 		// TODO Auto-generated method stub
+		super(me);
+		this.minMaxDepth = depth;
+	}
+	
+	/**
+	 * Helper function to find best location.
+	 * 
+	 * @param g the game to be played
+	 * @param depth the initial depth to be recursively implemented down to 0
+	 * @param currentPlayer will either be super.me (this player) or the opponent
+	 * @return will return the best location to be used in nextMove
+	 */
+	protected Location minimax(Game g, int depth, Player currentPlayer) {
 		throw new NotImplementedException();
 	}
+
+		
 
 	/**
 	 * Return the move that maximizes the score according to the minimax
@@ -89,6 +121,7 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	protected @Override Location nextMove(Game g) {
 		// TODO Auto-generated method stub
-		throw new NotImplementedException();
+		return minimax(g, minMaxDepth, super.me);
+		
 	}
 }
