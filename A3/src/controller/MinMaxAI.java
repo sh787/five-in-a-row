@@ -110,7 +110,38 @@ public abstract class MinMaxAI extends Controller {
 	 * @return will return the best location to be used in nextMove
 	 */
 	protected Location minimax(Game g, int depth, Player currentPlayer) {
-		throw new NotImplementedException();
+Iterator<Location> it= moves(g.getBoard()).iterator();
+		
+		//super.me is maximizing, super.me.opponent() is minimizing
+		int bestScore = 0; 
+		int currentScore;
+		
+		
+		if (depth == 0)
+			return bestLocation;
+		
+		while (it.hasNext()) { 
+				
+			Location next = it.next();
+			
+			if (currentPlayer == super.me) {
+				currentScore =  estimate(g.getBoard());
+				bestLocation = minimax(g, depth - 1, currentPlayer.opponent());
+				if (currentScore > bestScore) {
+					bestScore = currentScore;
+					bestLocation = next;
+				} 
+			} else {
+				currentScore =  estimate(g.getBoard());
+				bestLocation = minimax(g, depth - 1, currentPlayer.opponent());
+				if (currentScore < bestScore) {
+					bestScore = currentScore;
+					bestLocation = next;
+				}
+			}	
+		}
+		
+		return bestLocation;
 	}
 
 		
