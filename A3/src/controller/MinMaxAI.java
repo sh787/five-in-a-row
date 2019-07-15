@@ -110,10 +110,12 @@ public abstract class MinMaxAI extends Controller {
 			return estimate(b);
 		} else if (b.getState() == State.DRAW) {
 			return 0;
-		}else if (b.getState() == State.HAS_WINNER)
-			return Integer.MAX_VALUE;
+		} else if (b.getState() == State.HAS_WINNER) {
+			return estimate(b);
+		}	
 		
-		int best = 0;
+		int best = Integer.MIN_VALUE;
+		int worst = Integer.MAX_VALUE;
 		for (Location m: moves(b)) {
 			Board b2 = b.update(currentPlayer, m);
 			int newScore = calcScore(b2, depth-1, currentPlayer.opponent());
@@ -122,11 +124,12 @@ public abstract class MinMaxAI extends Controller {
 				if (newScore > best)
 					best = newScore;
 			} else {
-				if (newScore < best)
-					best = newScore;
+				if (newScore < worst)
+					worst = newScore;
 			}
 		}
-		return best;
+		if (currentPlayer == super.me)return best;
+		else return worst;
 		
 	}
 		
