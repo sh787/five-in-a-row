@@ -79,22 +79,6 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	private int minMaxDepth;
 	
-	/**
-	 * The best location that maximizes the score according to the minimax
-	 * algorithm. Initially the best location is the center of the board.
-	 */
-	private Location bestLocation = new Location(4, 4);
-	
-	/**
-	 * The best score according to the minimax algorithm. 
-	 */
-	private int bestScore = 0; 
-	
-	/**
-	 * The current score according to the minimax algorithm. 
-	 */
-	private int currentScore;
-	
 
 	
 	
@@ -120,45 +104,13 @@ public abstract class MinMaxAI extends Controller {
 	 * @param currentPlayer will either be super.me (this player) or the opponent
 	 * @return will return the best location to be used in nextMove
 	 */
-	protected int minimax(Board b, int depth, Player currentPlayer) {
-		
-		Iterator<Location> it= moves(b).iterator();
-		
-		//super.me is maximizing, super.me.opponent() is minimizing
-		
-		if (depth == 0)
-			return estimate(b);
-		
-		
-		Location next = it.next();
-			
-		if (currentPlayer == super.me) {
-			int bScore = Integer.MIN_VALUE;
-			while (it.hasNext()) {
-				int score = minimax(b.update(super.me, next), depth - 1, currentPlayer.opponent());
-				if (score > bScore) {
-					bScore = score;
-					bestLocation = next;
-					return bScore;
-				}		
-			} 
-		} else { 
-			int bScore = Integer.MAX_VALUE;
-			while (it.hasNext()) {
-				int score = minimax(b.update(super.me, next), depth - 1, currentPlayer.opponent());
-				if (score < bScore) {
-					bScore = score;
-					bestLocation = next;
-					return bScore;
-				}
-			}	
-		}
-		
-		return estimate(b);
-		
 	
+	private int calcScore(Board b, int depth, Player currentPlayer) {
+		throw new NotImplementedException();
+		
 	}
 
+	
 		
 
 	/**
@@ -167,8 +119,20 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	protected @Override Location nextMove(Game g) {
 		// TODO Auto-generated method stub
-		minimax(g.getBoard(), minMaxDepth, super.me);
-		return bestLocation;
+		int bestScore = 0;
+		Location bestMove = new Location(4, 4);
 		
+		for (Location loc: moves(g.getBoard())) {
+			Board b = g.getBoard().update(super.me, loc);
+			int score = calcScore(g.getBoard(), this.minMaxDepth, super.me);
+			if (score > bestScore) {
+				bestScore = score;
+				bestMove = loc;
+			}
+		
+			
+		}
+		return bestMove;
+
 	}
 }
