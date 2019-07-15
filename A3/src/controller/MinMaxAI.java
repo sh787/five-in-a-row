@@ -120,38 +120,43 @@ public abstract class MinMaxAI extends Controller {
 	 * @param currentPlayer will either be super.me (this player) or the opponent
 	 * @return will return the best location to be used in nextMove
 	 */
-	protected Location minimax(Game g, int depth, Player currentPlayer) {
+	protected int minimax(Board b, int depth, Player currentPlayer) {
 		
-		Iterator<Location> it= moves(g.getBoard()).iterator();
+		Iterator<Location> it= moves(b).iterator();
 		
 		//super.me is maximizing, super.me.opponent() is minimizing
 		
 		if (depth == 0)
-			return bestLocation;
+			return estimate(b);
 		
-		while (it.hasNext()) { 
-			Location next = it.next();
+		
+		Location next = it.next();
 			
-			if (currentPlayer == super.me) {
-				currentScore =  estimate(g.getBoard());
-				bestLocation = minimax(g, depth - 1, currentPlayer.opponent());
-				if (currentScore > bestScore) {
-					bestScore = currentScore;
+		if (currentPlayer == super.me) {
+			int bScore = Integer.MIN_VALUE;
+			while (it.hasNext()) {
+				int score = minimax(b.update(super.me, next), depth - 1, currentPlayer.opponent());
+				if (score > bScore) {
+					bScore = score;
 					bestLocation = next;
-					g.getBoard().update(super.me, bestLocation);
-				} 
-			} else { 
-				currentScore =  estimate(g.getBoard());
-				bestLocation = minimax(g, depth - 1, currentPlayer.opponent());
-				if (currentScore < bestScore) {
-					bestScore = currentScore;
+					return bScore;
+				}		
+			} 
+		} else { 
+			int bScore = Integer.MAX_VALUE;
+			while (it.hasNext()) {
+				int score = minimax(b.update(super.me, next), depth - 1, currentPlayer.opponent());
+				if (score < bScore) {
+					bScore = score;
 					bestLocation = next;
-					g.getBoard().update(super.me.opponent(), bestLocation);
+					return bScore;
 				}
 			}	
 		}
 		
-		return bestLocation;
+		return estimate(b);
+		
+	
 	}
 
 		
@@ -162,7 +167,8 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	protected @Override Location nextMove(Game g) {
 		// TODO Auto-generated method stub
-		return minimax(g, minMaxDepth, super.me);
+		minimax(g.getBoard(), minMaxDepth, super.me);
+		return bestLocation;
 		
 	}
 }
