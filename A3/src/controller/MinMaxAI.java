@@ -137,13 +137,14 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	protected @Override Location nextMove(Game g) {
 		// TODO Auto-generated method stub
-		int bestScore = 0;
-		Location bestMove = new Location(4, 4);
+		int bestScore = Integer.MIN_VALUE;
+		Iterator<Location> it = moves(g.getBoard()).iterator();
+		Location bestMove = it.next();
 		
 		for (Location loc: moves(g.getBoard())) {
 			Board g2 = g.getBoard().update(super.me, loc);
 			int score = calcScore(g2, this.minMaxDepth, super.me);
-			if ((score > bestScore)){
+			if (score > bestScore) {
 				bestScore = score;
 				bestMove = loc;
 			} 
