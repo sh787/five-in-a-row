@@ -97,7 +97,7 @@ public abstract class MinMaxAI extends Controller {
 	}
 	
 	/**
-	 * Helper function to find best location.
+	 * Helper function to find best score in order to find best location for nextMove.
 	 * 
 	 * @param g the game to be played
 	 * @param depth the initial depth to be recursively implemented down to 0
