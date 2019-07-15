@@ -102,37 +102,64 @@ public abstract class MinMaxAI extends Controller {
 	 * @param g the game to be played
 	 * @param depth the initial depth to be recursively implemented down to 0
 	 * @param currentPlayer will either be super.me (this player) or the opponent
-	 * @return will return the best location to be used in nextMove
+	 * @return will return the best score to be used in nextMove
 	 */
 	
 	private int calcScore(Board b, int depth, Player currentPlayer) {
-		throw new NotImplementedException();
+		if (depth == 0)
+			return estimate(b);
+		else if (b.getState() == State.DRAW)
+			return 0;
+		else if (b.getState() == State.HAS_WINNER)
+			return Integer.MAX_VALUE;
+		
+		int best = 0;
+		for (Location m: moves(b)) {
+			Board b2 = b.update(currentPlayer, m);
+			int newScore = calcScore(b2, depth-1, currentPlayer.opponent());
+		
+			if (currentPlayer == super.me) {
+				if (newScore > best)
+					best = newScore;
+			} else {
+				if (newScore < best)
+					best = newScore;
+			}
+		}
+		return best;
 		
 	}
-
-	
 		
 
 	/**
-	 * Return the move that maximizes the score according to the minimax
+	 * Return the move that maximizes the score according to the calcScore
 	 * algorithm described above.
 	 */
 	protected @Override Location nextMove(Game g) {
 		// TODO Auto-generated method stub
+		List<Location> bestMoves = new ArrayList<Location>();
 		int bestScore = 0;
-		Location bestMove = new Location(4, 4);
+		//Location bestMove = new Location(4, 4);
+		//bestMoves.add(bestMove);
 		
 		for (Location loc: moves(g.getBoard())) {
-			Board b = g.getBoard().update(super.me, loc);
-			int score = calcScore(g.getBoard(), this.minMaxDepth, super.me);
-			if (score > bestScore) {
+			Board g2 = g.getBoard().update(super.me, loc);
+			int score = calcScore(g2, this.minMaxDepth, super.me);
+			if ((score > bestScore)){
+				bestMoves.add(0, loc);
 				bestScore = score;
-				bestMove = loc;
+				//bestMove = loc;
+
 			}
-		
 			
 		}
-		return bestMove;
+		for (int i = 0; i < bestMoves.size(); i++) {
+			if (bestMoves.get(i) == null)
+				return bestMoves.get(i);
+		}
+		
+		return bestMoves.get(0);
+
 
 	}
 }
