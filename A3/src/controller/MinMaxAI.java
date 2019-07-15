@@ -106,11 +106,11 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	
 	private int calcScore(Board b, int depth, Player currentPlayer) {
-		if (depth == 0)
+		if (depth == 0) {
 			return estimate(b);
-		else if (b.getState() == State.DRAW)
+		} else if (b.getState() == State.DRAW) {
 			return 0;
-		else if (b.getState() == State.HAS_WINNER)
+		}else if (b.getState() == State.HAS_WINNER)
 			return Integer.MAX_VALUE;
 		
 		int best = 0;
@@ -137,29 +137,18 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	protected @Override Location nextMove(Game g) {
 		// TODO Auto-generated method stub
-		List<Location> bestMoves = new ArrayList<Location>();
 		int bestScore = 0;
+		Location bestMove = null;
 		//Location bestMove = new Location(4, 4);
-		//bestMoves.add(bestMove);
 		
 		for (Location loc: moves(g.getBoard())) {
 			Board g2 = g.getBoard().update(super.me, loc);
 			int score = calcScore(g2, this.minMaxDepth, super.me);
 			if ((score > bestScore)){
-				bestMoves.add(0, loc);
 				bestScore = score;
-				//bestMove = loc;
-
-			}
-			
+				bestMove = loc;
+			} 
 		}
-		for (int i = 0; i < bestMoves.size(); i++) {
-			if (bestMoves.get(i) == null)
-				return bestMoves.get(i);
-		}
-		
-		return bestMoves.get(0);
-
-
+		return bestMove;
 	}
 }
