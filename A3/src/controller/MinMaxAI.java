@@ -83,7 +83,18 @@ public abstract class MinMaxAI extends Controller {
 	 * The best location that maximizes the score according to the minimax
 	 * algorithm. Initially the best location is the center of the board.
 	 */
-	Location bestLocation = new Location(4, 4);
+	private Location bestLocation = new Location(4, 4);
+	
+	/**
+	 * The best score according to the minimax algorithm. 
+	 */
+	private int bestScore = 0; 
+	
+	/**
+	 * The current score according to the minimax algorithm. 
+	 */
+	private int currentScore;
+	
 
 	
 	
@@ -110,18 +121,15 @@ public abstract class MinMaxAI extends Controller {
 	 * @return will return the best location to be used in nextMove
 	 */
 	protected Location minimax(Game g, int depth, Player currentPlayer) {
+		
 		Iterator<Location> it= moves(g.getBoard()).iterator();
 		
 		//super.me is maximizing, super.me.opponent() is minimizing
-		int bestScore = Integer.MIN_VALUE; 
-		int currentScore;
-		
 		
 		if (depth == 0)
 			return bestLocation;
 		
 		while (it.hasNext()) { 
-				
 			Location next = it.next();
 			
 			if (currentPlayer == super.me) {
@@ -138,7 +146,7 @@ public abstract class MinMaxAI extends Controller {
 				if (currentScore < bestScore) {
 					bestScore = currentScore;
 					bestLocation = next;
-					g.getBoard().update(super.me, bestLocation);
+					g.getBoard().update(super.me.opponent(), bestLocation);
 				}
 			}	
 		}
