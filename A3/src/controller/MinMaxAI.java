@@ -78,9 +78,7 @@ public abstract class MinMaxAI extends Controller {
 	 * The depth of the moves of which the algorithm will look into the future.
 	 */
 	private int minMaxDepth;
-	
 
-	
 	
 	/**
 	 * Create an AI that will recursively search for the next move using the
@@ -91,7 +89,6 @@ public abstract class MinMaxAI extends Controller {
 	 * more time to select moves.
 	 */
 	protected MinMaxAI(Player me, int depth) {
-		// TODO Auto-generated method stub
 		super(me);
 		this.minMaxDepth = depth;
 	}
@@ -99,8 +96,8 @@ public abstract class MinMaxAI extends Controller {
 	/**
 	 * Helper function to find best score for the best location for next move.
 	 * 
-	 * @param g the game to be played
-	 * @param depth the initial depth to be recursively implemented down to 0
+	 * @param b the board of the game to be played
+	 * @param depth the next depth to be recursively implemented down to 0
 	 * @param currentPlayer will either be super.me (this player) or the opponent
 	 * @return will return the best score to be used in nextMove
 	 */
@@ -112,6 +109,7 @@ public abstract class MinMaxAI extends Controller {
 			return 0;
 		} 
 		
+		// initialize best to null
 		Integer best = null;
 		
 		for (Location m: moves(b)) {
@@ -131,7 +129,7 @@ public abstract class MinMaxAI extends Controller {
 			}
 		}
 
-		
+		// returns the best score to be used by nextMove
 		return best;
 		
 	}
@@ -142,7 +140,7 @@ public abstract class MinMaxAI extends Controller {
 	 * algorithm described above.
 	 */
 	protected @Override Location nextMove(Game g) {
-		// TODO Auto-generated method stub
+		// initialize bestScore to the smallest integer value
 		int bestScore = Integer.MIN_VALUE;
 		Iterator<Location> it = moves(g.getBoard()).iterator();
 		Location bestMove = it.next();
@@ -154,7 +152,8 @@ public abstract class MinMaxAI extends Controller {
 				bestScore = score;
 				bestMove = loc;
 			} 
-		} 
+		}
+		// returns the best move
 		return bestMove;
 	}
 }
