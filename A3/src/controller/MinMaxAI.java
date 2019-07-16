@@ -97,7 +97,7 @@ public abstract class MinMaxAI extends Controller {
 	}
 	
 	/**
-	 * Helper function to find best location.
+	 * Helper function to find best score for the best location for next move.
 	 * 
 	 * @param g the game to be played
 	 * @param depth the initial depth to be recursively implemented down to 0
@@ -128,8 +128,12 @@ public abstract class MinMaxAI extends Controller {
 					worst = newScore;
 			}
 		}
-		if (currentPlayer == super.me)return best;
-		else return worst;
+		
+		if (currentPlayer == super.me) {
+			return best;
+		} else {
+			return worst;
+		}
 		
 	}
 		
