@@ -21,10 +21,6 @@ public class DumbAI extends Controller {
 	}
 
 	protected @Override Location nextMove(Game g) {
-		// Note: Calling delay here will make the CLUI work a little more
-		// nicely when competing different AIs against each other.
-		
-		// TODO Auto-generated method stub
 		List<Location> available = new ArrayList<Location>();
 		
 		// find available moves
