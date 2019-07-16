@@ -106,13 +106,11 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	
 	private int calcScore(Board b, int depth, Player currentPlayer) {
-		if (depth == 0) {
+		if (depth == 0 || b.getState() == State.HAS_WINNER) {
 			return estimate(b);
 		} else if (b.getState() == State.DRAW) {
 			return 0;
-		} else if (b.getState() == State.HAS_WINNER) {
-			return estimate(b);
-		}	
+		} 
 		
 		int best = Integer.MIN_VALUE;
 		int worst = Integer.MAX_VALUE;
