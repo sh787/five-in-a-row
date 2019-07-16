@@ -112,26 +112,27 @@ public abstract class MinMaxAI extends Controller {
 			return 0;
 		} 
 		
-		int best = Integer.MIN_VALUE;
-		int worst = Integer.MAX_VALUE;
+		Integer best = null;
+		
 		for (Location m: moves(b)) {
 			Board b2 = b.update(currentPlayer, m);
 			int newScore = calcScore(b2, depth-1, currentPlayer.opponent());
-		
+			
+			if (best == null) {
+				best = newScore;
+			}
+			
 			if (currentPlayer == super.me) {
 				if (newScore > best)
 					best = newScore;
 			} else {
-				if (newScore < worst)
-					worst = newScore;
+				if (newScore < best)
+					best = newScore;
 			}
 		}
+
 		
-		if (currentPlayer == super.me) {
-			return best;
-		} else {
-			return worst;
-		}
+		return best;
 		
 	}
 		
@@ -148,7 +149,7 @@ public abstract class MinMaxAI extends Controller {
 		
 		for (Location loc: moves(g.getBoard())) {
 			Board g2 = g.getBoard().update(super.me, loc);
-			int score = calcScore(g2, this.minMaxDepth, super.me);
+			int score = calcScore(g2, this.minMaxDepth-1, super.me.opponent());
 			if (score > bestScore) {
 				bestScore = score;
 				bestMove = loc;
